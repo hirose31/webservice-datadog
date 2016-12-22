@@ -255,6 +255,10 @@ Optional. Allowed values: normal, low.
 
 Optional. The id of the aggregate event.
 
+=item * host
+
+Optional. Host that generated the event.
+
 =item * tags
 
 Optional. List of tags associated with the event.
@@ -302,6 +306,13 @@ sub create
 	if ( defined( $args{'related_event_id'} ) )
 	{
 		$data->{'related_event_id'} = $args{'related_event_id'};
+	}
+	
+	if ( defined( $args{'host'} ) )
+	{
+		# Force to lowercase because DataDog is case sensitive and we don't want to
+		# tag event with hosts of the same name, varying only in case.
+		$data->{'host'} = lc( $args{'host'} );
 	}
 	
 	if ( defined( $args{'tags'} ) )
